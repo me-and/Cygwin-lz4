@@ -1,0 +1,28 @@
+SVN_URI="http://lz4.googlecode.com/svn"
+SVN_MODULE="lz4"
+SVN_BRANCH="trunk"
+inherit svn
+
+NAME="lz4"
+VERSION=20130701
+RELEASE=1
+CATEGORY="Archive"
+SUMMARY="LZ4 de/compressor"
+DESCRIPTION="LZ4 is an LZ77-type compressor with a fixed, byte-oriented
+encoding. The most important design principle behind LZ4 is simplicity."
+HOMEPAGE="https://code.google.com/p/lz4/"
+
+PATCH_URI="20130701-tar-args.patch"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	cygmake CC=${CC} CFLAGS="${CFLAGS}" EXT=".exe"
+}
+
+src_install() {
+	dobin ${B}/lz4c.exe
+	dosym lz4c.exe /usr/bin/unlz4
+	dosym lz4c.exe /usr/bin/lz4cat
+	dodoc ${S}/*.{odt,txt}
+}
