@@ -1,18 +1,31 @@
-SVN_URI="http://lz4.googlecode.com/svn"
-SVN_MODULE="lz4"
-SVN_BRANCH="trunk"
-inherit svn
-
 NAME="lz4"
-VERSION=20130701
+VERSION=124
 RELEASE=1
 CATEGORY="Archive"
 SUMMARY="LZ4 de/compressor"
 DESCRIPTION="LZ4 is an LZ77-type compressor with a fixed, byte-oriented
 encoding. The most important design principle behind LZ4 is simplicity."
 HOMEPAGE="https://code.google.com/p/lz4/"
+commit=ca353cfe6e6ed078501774f0a25d2eb8190036c9
+SRC_URI="https://github.com/Cyan4973/lz4/archive/${commit}/lz4-${commit}.tar.gz"
+SRC_DIR="lz4-${commit}"
+PATCH_URI="
+	124-cygwin-compile.patch
+	124-cygwin-dll.patch
+	124-cygwin-install.patch
+"
 
-PATCH_URI="20130701-tar-args.patch"
+PKG_NAMES="lz4 liblz4_1 liblz4-devel"
+lz4_CONTENTS="usr/bin/lz4* usr/share/doc/ usr/share/man/"
+liblz4_1_CATEGORY="Libs"
+liblz4_1_CONTENTS="usr/bin/cyglz4-1.dll"
+liblz4_devel_CATEGORY="Libs"
+liblz4_devel_CONTENTS="usr/include/lz4*.h usr/lib/liblz4.dll.a usr/lib/pkgconfig/"
+
+CYGPORT_USE_UNSTABLE_API=1
+src_unpack_hook() {
+	make -n -p | grep -q "VERSION = ${VERSION}" || error "Version mismatch"
+}
 
 src_compile() {
 	lndirs
@@ -21,8 +34,8 @@ src_compile() {
 }
 
 src_install() {
-	dobin ${B}/lz4c.exe
-	dosym lz4c.exe /usr/bin/unlz4
-	dosym lz4c.exe /usr/bin/lz4cat
-	dodoc ${S}/*.{odt,txt}
+	cd ${B}
+	cyginstall
+
+	rm -f ${D}/usr/lib/liblz4.a
 }

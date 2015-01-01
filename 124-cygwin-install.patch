@@ -1,0 +1,22 @@
+--- origsrc/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/Makefile	2014-11-06 12:39:42.000000000 -0600
++++ src/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/Makefile	2015-01-01 00:42:05.368670100 -0600
+@@ -122,7 +122,7 @@ clean:
+ 
+ #------------------------------------------------------------------------
+ #make install is validated only for Linux, OSX, kFreeBSD and Hurd targets
+-ifneq (,$(filter $(shell uname),Linux Darwin GNU/kFreeBSD GNU))
++ifneq (,$(filter Linux Darwin GNU/kFreeBSD GNU CYGWIN%, $(shell uname)))
+ 
+ liblz4.pc: liblz4.pc.in Makefile
+ 	@echo creating pkgconfig
+--- origsrc/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/programs/Makefile	2014-11-06 12:39:42.000000000 -0600
++++ src/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/programs/Makefile	2015-01-01 00:40:41.875067700 -0600
+@@ -108,7 +108,7 @@ clean:
+ 
+ #------------------------------------------------------------------------
+ #make install is validated only for Linux, OSX, kFreeBSD and Hurd targets
+-ifneq (,$(filter $(shell uname),Linux Darwin GNU/kFreeBSD GNU))
++ifneq (,$(filter Linux Darwin GNU/kFreeBSD GNU CYGWIN%, $(shell uname)))
+ 
+ install: lz4 lz4c
+ 	@echo Installing binaries

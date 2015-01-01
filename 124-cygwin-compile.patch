@@ -1,0 +1,50 @@
+--- origsrc/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/programs/lz4cli.c	2014-11-06 12:39:42.000000000 -0600
++++ src/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/programs/lz4cli.c	2015-01-01 00:24:49.643649700 -0600
+@@ -73,7 +73,7 @@
+ //****************************
+ // OS-specific Includes
+ //****************************
+-#if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__)
++#if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(_WIN32)
+ #  include <fcntl.h>    // _O_BINARY
+ #  include <io.h>       // _setmode, _isatty
+ #  ifdef __MINGW32__
+@@ -83,7 +83,13 @@
+ #  define IS_CONSOLE(stdStream) _isatty(_fileno(stdStream))
+ #else
+ #  include <unistd.h>   // isatty
++#  ifdef __CYGWIN__
++#  include <fcntl.h>    /* _O_BINARY */
++#  include <io.h>       /* _setmode */
++#  define SET_BINARY_MODE(file) _setmode(fileno(file), _O_BINARY)
++#  else
+ #  define SET_BINARY_MODE(file)
++#  endif
+ #  define IS_CONSOLE(stdStream) isatty(fileno(stdStream))
+ #endif
+ 
+--- origsrc/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/programs/lz4io.c	2014-11-06 12:39:42.000000000 -0600
++++ src/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/programs/lz4io.c	2015-01-01 00:25:30.584848600 -0600
+@@ -59,7 +59,7 @@
+ //****************************
+ // OS-specific Includes
+ //****************************
+-#if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__)
++#if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(_WIN32)
+ #  include <fcntl.h>    // _O_BINARY
+ #  include <io.h>       // _setmode, _isatty
+ #  ifdef __MINGW32__
+@@ -69,7 +69,13 @@
+ #  define IS_CONSOLE(stdStream) _isatty(_fileno(stdStream))
+ #else
+ #  include <unistd.h>   // isatty
++#  ifdef __CYGWIN__
++#  include <fcntl.h>    /* _O_BINARY */
++#  include <io.h>       /* _setmode */
++#  define SET_BINARY_MODE(file) _setmode(fileno(file), _O_BINARY)
++#  else
+ #  define SET_BINARY_MODE(file)
++#  endif
+ #  define IS_CONSOLE(stdStream) isatty(fileno(stdStream))
+ #endif
+ 
