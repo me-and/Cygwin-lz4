@@ -1,16 +1,16 @@
---- origsrc/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/Makefile	2014-11-06 12:39:42.000000000 -0600
-+++ src/lz4-ca353cfe6e6ed078501774f0a25d2eb8190036c9/Makefile	2015-01-01 00:42:05.368670100 -0600
-@@ -44,6 +44,7 @@ CC     := $(CC)
+--- origsrc/lz4-r131/lib/Makefile	2015-06-29 04:48:37.000000000 -0500
++++ src/lz4-r131/lib/Makefile	2015-10-26 12:40:12.835751000 -0500
+@@ -42,6 +42,7 @@ PREFIX ?= /usr/local
  CFLAGS ?= -O3
- CFLAGS += -I. -std=c99 -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wstrict-prototypes -DLZ4_VERSION=\"$(RELEASE)\"
+ CFLAGS += -I. -std=c99 -Wall -Wextra -Wundef -Wshadow -Wcast-align -Wcast-qual -Wstrict-prototypes -pedantic -DXXH_NAMESPACE=LZ4_
  
 +BINDIR?= $(PREFIX)/bin
  LIBDIR?= $(PREFIX)/lib
  INCLUDEDIR=$(PREFIX)/include
- PRGDIR = programs
-@@ -110,10 +111,7 @@ liblz4: lz4.c lz4hc.c
+ 
+@@ -69,10 +70,7 @@ liblz4: lz4.c lz4hc.c lz4frame.c xxhash.
  	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $^
- 	@$(AR) rcs liblz4.a lz4.o lz4hc.o
+ 	@$(AR) rcs liblz4.a lz4.o lz4hc.o lz4frame.o xxhash.o
  	@echo compiling dynamic library $(LIBVER)
 -	@$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -shared $^ -fPIC $(SONAME_FLAGS) -o $@.$(SHARED_EXT_VER)
 -	@echo creating versioned links
@@ -19,8 +19,8 @@
 +	@$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -shared $^ -Wl,--out-implib,liblz4.dll.a -o cyglz4-$(LIBVER_MAJOR).dll
  
  clean:
- 	@rm -f core *.o *.a *.$(SHARED_EXT) *.$(SHARED_EXT).* $(DISTRIBNAME) *.sha1 liblz4.pc
-@@ -136,9 +134,9 @@ liblz4.pc: liblz4.pc.in Makefile
+ 	@rm -f core *.o *.a *.$(SHARED_EXT) *.$(SHARED_EXT).* liblz4.pc
+@@ -93,9 +91,9 @@ liblz4.pc: liblz4.pc.in Makefile
  
  install: liblz4 liblz4.pc
  	@install -d -m 755 $(DESTDIR)$(LIBDIR)/pkgconfig/ $(DESTDIR)$(INCLUDEDIR)/

@@ -1,22 +1,21 @@
 NAME="lz4"
-VERSION=124
+VERSION=131
 RELEASE=1
 CATEGORY="Archive"
 SUMMARY="LZ4 de/compressor"
 DESCRIPTION="LZ4 is an LZ77-type compressor with a fixed, byte-oriented
 encoding. The most important design principle behind LZ4 is simplicity."
-HOMEPAGE="https://code.google.com/p/lz4/"
-commit=ca353cfe6e6ed078501774f0a25d2eb8190036c9
-SRC_URI="https://github.com/Cyan4973/lz4/archive/${commit}/lz4-${commit}.tar.gz"
-SRC_DIR="lz4-${commit}"
+HOMEPAGE="https://cyan4973.github.io/lz4/"
+SRC_URI="https://github.com/Cyan4973/lz4/archive/r${VERSION}/lz4-r${VERSION}.tar.gz"
+SRC_DIR="lz4-r${VERSION}"
 PATCH_URI="
-	124-cygwin-compile.patch
-	124-cygwin-dll.patch
-	124-cygwin-install.patch
+	131-cygwin-compile.patch
+	131-cygwin-dll.patch
+	131-cygwin-install.patch
 "
 
 PKG_NAMES="lz4 liblz4_1 liblz4-devel"
-lz4_CONTENTS="usr/bin/lz4* usr/share/doc/ usr/share/man/"
+lz4_CONTENTS="usr/bin/lz4* usr/bin/unlz4 usr/share/doc/ usr/share/man/"
 liblz4_1_CATEGORY="Libs"
 liblz4_1_CONTENTS="usr/bin/cyglz4-1.dll"
 liblz4_devel_CATEGORY="Libs"
@@ -30,12 +29,12 @@ src_unpack_hook() {
 src_compile() {
 	lndirs
 	cd ${B}
-	cygmake CC=${CC} CFLAGS="${CFLAGS}" EXT=".exe"
+	cygmake CC=${CC} CFLAGS="${CFLAGS}" EXT=".exe" all
 }
 
 src_install() {
 	cd ${B}
-	cyginstall
+	cyginstall PREFIX=/usr
 
 	rm -f ${D}/usr/lib/liblz4.a
 }
