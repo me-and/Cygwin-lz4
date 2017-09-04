@@ -1,0 +1,44 @@
+--- origsrc/lz4-1.7.5/lib/Makefile	2017-01-02 23:09:52.000000000 -0600
++++ src/lz4-1.7.5/lib/Makefile	2017-06-19 09:39:30.318048400 -0500
+@@ -89,6 +89,9 @@ endif
+ 
+ $(LIBLZ4): *.c
+ 	@echo compiling dynamic library $(LIBVER)
++ifneq (,$(filter CYGWIN%,$(shell uname)))
++	@$(CC) $(FLAGS) -shared $^ -Wl,--out-implib,liblz4.dll.a $(SONAME_FLAGS) -o cyglz4-$(LIBVER_MAJOR).dll
++else
+ ifneq (,$(filter Windows%,$(OS)))
+ 	@$(CC) $(FLAGS) -DLZ4_DLL_EXPORT=1 -shared $^ -o dll\$@.dll
+ 	dlltool -D dll\liblz4.dll -d dll\liblz4.def -l dll\liblz4.lib
+@@ -98,6 +101,7 @@ else
+ 	@ln -sf $@ liblz4.$(SHARED_EXT_MAJOR)
+ 	@ln -sf $@ liblz4.$(SHARED_EXT)
+ endif
++endif
+ 
+ liblz4: $(LIBLZ4)
+ 
+@@ -120,6 +124,7 @@ endif
+ 
+ PREFIX     ?= /usr/local
+ DESTDIR    ?=
++BINDIR     ?= $(PREFIX)/bin
+ LIBDIR     ?= $(PREFIX)/lib
+ INCLUDEDIR ?= $(PREFIX)/include
+ 
+@@ -147,9 +152,15 @@ install: lib liblz4.pc
+ ifeq ($(BUILD_STATIC),yes)
+ 	@$(INSTALL_LIB) liblz4.a $(DESTDIR)$(LIBDIR)/liblz4.a
+ endif
++ifneq (,$(filter CYGWIN%,$(shell uname)))
++	@install -d -m 755 $(DESTDIR)$(BINDIR)/
++	@install -m 755 cyglz4-$(LIBVER_MAJOR).dll $(DESTDIR)$(BINDIR)/
++	@install -m 644 liblz4.dll.a $(DESTDIR)$(LIBDIR)/liblz4.dll.a
++else
+ 	@$(INSTALL_LIB) liblz4.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)
+ 	@ln -sf liblz4.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)/liblz4.$(SHARED_EXT_MAJOR)
+ 	@ln -sf liblz4.$(SHARED_EXT_VER) $(DESTDIR)$(LIBDIR)/liblz4.$(SHARED_EXT)
++endif
+ 	@echo Installing includes
+ 	@$(INSTALL_DATA) lz4.h $(DESTDIR)$(INCLUDEDIR)/lz4.h
+ 	@$(INSTALL_DATA) lz4hc.h $(DESTDIR)$(INCLUDEDIR)/lz4hc.h

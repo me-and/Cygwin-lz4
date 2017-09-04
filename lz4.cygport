@@ -1,17 +1,16 @@
 NAME="lz4"
-VERSION=131
+VERSION=1.7.5
 RELEASE=1
 CATEGORY="Archive"
 SUMMARY="LZ4 de/compressor"
 DESCRIPTION="LZ4 is an LZ77-type compressor with a fixed, byte-oriented
 encoding. The most important design principle behind LZ4 is simplicity."
-HOMEPAGE="https://cyan4973.github.io/lz4/"
-SRC_URI="https://github.com/Cyan4973/lz4/archive/r${VERSION}/lz4-r${VERSION}.tar.gz"
-SRC_DIR="lz4-r${VERSION}"
+HOMEPAGE="https://lz4.github.io/lz4/"
+SRC_URI="https://github.com/lz4/lz4/archive/v${VERSION}/lz4-v${VERSION}.tar.gz"
+SRC_DIR="lz4-${VERSION}"
 PATCH_URI="
-	131-cygwin-compile.patch
-	131-cygwin-dll.patch
-	131-cygwin-install.patch
+	1.7.5-cygwin-dll.patch
+	1.7.5-cygwin-install.patch
 "
 
 PKG_NAMES="lz4 liblz4_1 liblz4-devel"
@@ -20,11 +19,6 @@ liblz4_1_CATEGORY="Libs"
 liblz4_1_CONTENTS="usr/bin/cyglz4-1.dll"
 liblz4_devel_CATEGORY="Libs"
 liblz4_devel_CONTENTS="usr/include/lz4*.h usr/lib/liblz4.dll.a usr/lib/pkgconfig/"
-
-CYGPORT_USE_UNSTABLE_API=1
-src_unpack_hook() {
-	make -n -p | grep -q "VERSION = ${VERSION}" || error "Version mismatch"
-}
 
 src_compile() {
 	lndirs

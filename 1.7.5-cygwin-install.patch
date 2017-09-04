@@ -1,0 +1,33 @@
+--- origsrc/lz4-1.7.5/Makefile	2017-01-02 23:09:52.000000000 -0600
++++ src/lz4-1.7.5/Makefile	2017-06-19 09:25:47.933172300 -0500
+@@ -87,7 +87,7 @@ clean:
+ #------------------------------------------------------------------------
+ #make install is validated only for Linux, OSX, kFreeBSD, Hurd and
+ #FreeBSD targets
+-ifneq (,$(filter $(shell uname),Linux Darwin GNU/kFreeBSD GNU FreeBSD))
++ifneq (,$(filter Linux Darwin GNU/kFreeBSD GNU FreeBSD CYGWIN%, $(shell uname)))
+ HOST_OS = POSIX
+ 
+ install:
+--- origsrc/lz4-1.7.5/lib/Makefile	2017-01-02 23:09:52.000000000 -0600
++++ src/lz4-1.7.5/lib/Makefile	2017-06-19 09:39:30.318048400 -0500
+@@ -110,7 +110,7 @@ clean:
+ #-----------------------------------------------------------------------------
+ # make install is validated only for Linux, OSX, BSD, Hurd and Solaris targets
+ #-----------------------------------------------------------------------------
+-ifneq (,$(filter $(shell uname),Linux Darwin GNU/kFreeBSD GNU OpenBSD FreeBSD NetBSD DragonFly SunOS))
++ifneq (,$(filter Linux Darwin GNU/kFreeBSD GNU OpenBSD FreeBSD NetBSD DragonFly SunOS CYGWIN%, $(shell uname)))
+ 
+ ifneq (,$(filter $(shell uname),SunOS))
+ INSTALL ?= ginstall
+--- origsrc/lz4-1.7.5/programs/Makefile	2017-01-02 23:09:52.000000000 -0600
++++ src/lz4-1.7.5/programs/Makefile	2017-06-19 09:27:25.812946800 -0500
+@@ -111,7 +111,7 @@ preview-man: clean-man man
+ #-----------------------------------------------------------------------------
+ # make install is validated only for Linux, OSX, BSD, Hurd and Solaris targets
+ #-----------------------------------------------------------------------------
+-ifneq (,$(filter $(shell uname),Linux Darwin GNU/kFreeBSD GNU OpenBSD FreeBSD NetBSD DragonFly SunOS))
++ifneq (,$(filter Linux Darwin GNU/kFreeBSD GNU OpenBSD FreeBSD NetBSD DragonFly SunOS CYGWIN%, $(shell uname)))
+ 
+ unlz4: lz4
+ 	ln -s lz4 unlz4
