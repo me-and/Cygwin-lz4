@@ -1,5 +1,5 @@
 NAME="lz4"
-VERSION=1.7.5
+VERSION=1.9.4
 RELEASE=1
 CATEGORY="Archive"
 SUMMARY="LZ4 de/compressor"
@@ -8,13 +8,12 @@ encoding. The most important design principle behind LZ4 is simplicity."
 HOMEPAGE="https://lz4.github.io/lz4/"
 SRC_URI="https://github.com/lz4/lz4/archive/v${VERSION}/lz4-v${VERSION}.tar.gz"
 SRC_DIR="lz4-${VERSION}"
-PATCH_URI="
-	1.7.5-cygwin-dll.patch
-	1.7.5-cygwin-install.patch
-"
+LICENSE="BSD-2-Clause AND GPL-2.0"
+LICENSE_SPDX="SPDX-License-Identifier: BSD-2-Clause AND GPL-2.0"
+LICENSE_URI=LICENSE
 
 PKG_NAMES="lz4 liblz4_1 liblz4-devel"
-lz4_CONTENTS="usr/bin/lz4* usr/bin/unlz4 usr/share/doc/ usr/share/man/"
+lz4_CONTENTS="usr/bin/lz4* usr/bin/unlz4* usr/share/doc/ usr/share/man/"
 liblz4_1_CATEGORY="Libs"
 liblz4_1_CONTENTS="usr/bin/cyglz4-1.dll"
 liblz4_devel_CATEGORY="Libs"
