@@ -1,9 +1,0 @@
-category: Archive
-build-depends: cygport 
-sdesc: "LZ4 de/compressor"
-ldesc: "LZ4 is an LZ77-type compressor with a fixed, byte-oriented
-encoding. The most important design principle behind LZ4 is simplicity."
-skip:
-
-homepage: https://lz4.github.io/lz4/
-license: BSD-2-Clause AND GPL-2.0
